@@ -8,13 +8,15 @@ using System.Threading.Tasks;
 
 namespace Nac.Wpf
 {
+	[System.Runtime.Serialization.DataContract]
 	public class NotifyObject : INotifyPropertyChanged
 	{
 		public event PropertyChangedEventHandler PropertyChanged;
 
 		protected void SetProperty<T>(ref T field, T value, [CallerMemberName]string propertyName = null)
 		{
-			if(!field.Equals(value))
+			var isNewValue = value == null ? field != null : !value.Equals(field);
+            if(isNewValue)
 			{
 				field = value;
 				Raise(propertyName);
